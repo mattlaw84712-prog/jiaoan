@@ -19,13 +19,13 @@ export interface RouteConfig {
 
 export const routes: RouteConfig[] = [
   { name: '登录', path: '/login', element: <LoginPage />, public: true },
-  { name: '首页', path: '/', element: <HomePage />, public: true },
-  { name: '新建教案', path: '/create', element: <Step1Page />, public: true },
-  { name: '第一步', path: '/step/1', element: <Step1Page />, public: true },
-  { name: '第二步', path: '/step/2', element: <Step2Page />, public: true },
-  { name: '第三步', path: '/step/3', element: <Step3Page />, public: true },
-  { name: '第四步', path: '/step/4', element: <Step4Page />, public: true },
-  { name: '第五步', path: '/step/5', element: <Step5Page />, public: true },
-  { name: '完成', path: '/complete/:id', element: <CompletePage />, public: true },
-  { name: '详情', path: '/detail/:id', element: <DetailPage />, public: true },
+  { name: '首页', path: '/', element: <HomePage /> },
+  { name: '新建教案', path: '/create', element: <Step1Page /> },
+  { name: '第一步', path: '/step/1', element: <Step1Page /> },
+  { name: '第二步', path: '/step/2', element: <Step2Page /> },
+  { name: '第三步', path: '/step/3', element: <Step3Page /> },
+  { name: '第四步', path: '/step/4', element: <Step4Page /> },
+  { name: '第五步', path: '/step/5', element: <Step5Page /> },
+  { name: '完成', path: '/complete/:id', element: <CompletePage /> },
+  { name: '详情', path: '/detail/:id', element: <DetailPage /> },
 ];
