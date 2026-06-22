@@ -1,10 +1,20 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 import { useLessonPlan } from '@/contexts/LessonPlanContext';
-import { Plus, Search, Trash2, FileText, Clock, Tag } from 'lucide-react';
+import { Plus, Search, Trash2, FileText, Clock, Tag, LogOut, User as UserIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import OnboardingDialog from '@/components/OnboardingDialog';
 import { STATUS_COLORS } from '@/types/lessonPlan';
@@ -13,10 +23,16 @@ import { format } from 'date-fns';
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const { plans, deletePlan, searchPlans } = useLessonPlan();
+  const { user, profile, signOut } = useAuth();
+  const { plans, deletePlan, searchPlans, loading } = useLessonPlan();
   const [search, setSearch] = useState('');
 
   const filteredPlans = useMemo(() => searchPlans(search), [searchPlans, search]);
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/login');
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -34,13 +50,38 @@ export default function HomePage() {
                 帮助幼儿园教师按照"4+1"方法高效打磨教案
               </p>
             </div>
-            <Button
-              onClick={() => navigate('/create')}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 shrink-0"
-            >
-              <Plus className="w-4 h-4 mr-1.5" />
-              新建教案
-            </Button>
+            <div className="flex items-center gap-3 shrink-0">
+              <Button
+                onClick={() => navigate('/create')}
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                <Plus className="w-4 h-4 mr-1.5" />
+                新建教案
+              </Button>
+
+              {user && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Avatar className="w-9 h-9 cursor-pointer border border-primary/20">
+                      <AvatarFallback className="bg-primary/10 text-primary text-sm">
+                        {(profile?.username || user.email || 'U').charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuLabel className="flex items-center gap-2">
+                      <UserIcon className="w-4 h-4" />
+                      {profile?.username || user.email || '用户'}
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleSignOut} className="text-destructive cursor-pointer">
+                      <LogOut className="w-4 h-4 mr-2" />
+                      退出登录
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -1,8 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-// @ts-ignore
 import { supabase } from '@/db/supabase';
 import type { User } from '@supabase/supabase-js';
-// @ts-ignore
 import type { Profile } from '@/types/types';
 import { toast } from 'sonner';
 
@@ -50,14 +48,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase
       .auth
       .getSession()
-      // @ts-ignore
+      
       .then(({ data: { session } }) => {
         setUser(session?.user ?? null);
         if (session?.user) {
           getProfile(session.user.id).then(setProfile);
         }
       })
-      // @ts-ignore
+      
       .catch(error => {
         toast.error(`获取用户信息失败: ${error.message}`);
       })
@@ -65,7 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setLoading(false);
       });
 
-    // @ts-ignore
+    
     // In this function, do NOT use any await calls. Use `.then()` instead to avoid deadlocks.
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);

@@ -7,6 +7,7 @@ import Step4Page from './pages/Step4Page';
 import Step5Page from './pages/Step5Page';
 import CompletePage from './pages/CompletePage';
 import DetailPage from './pages/DetailPage';
+import LoginPage from './pages/LoginPage';
 
 export interface RouteConfig {
   name: string;
@@ -17,6 +18,7 @@ export interface RouteConfig {
 }
 
 export const routes: RouteConfig[] = [
+  { name: '登录', path: '/login', element: <LoginPage />, public: true },
   { name: '首页', path: '/', element: <HomePage />, public: true },
   { name: '新建教案', path: '/create', element: <Step1Page />, public: true },
   { name: '第一步', path: '/step/1', element: <Step1Page />, public: true },
