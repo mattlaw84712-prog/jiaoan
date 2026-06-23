@@ -1,13 +1,28 @@
+import { lazy, Suspense } from 'react';
 import type { ReactNode } from 'react';
-import HomePage from './pages/HomePage';
-import Step1Page from './pages/Step1Page';
-import Step2Page from './pages/Step2Page';
-import Step3Page from './pages/Step3Page';
-import Step4Page from './pages/Step4Page';
-import Step5Page from './pages/Step5Page';
-import CompletePage from './pages/CompletePage';
-import DetailPage from './pages/DetailPage';
-import LoginPage from './pages/LoginPage';
+import { Loader2 } from 'lucide-react';
+
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const HomePage = lazy(() => import('./pages/HomePage'));
+const Step1Page = lazy(() => import('./pages/Step1Page'));
+const Step2Page = lazy(() => import('./pages/Step2Page'));
+const Step3Page = lazy(() => import('./pages/Step3Page'));
+const Step4Page = lazy(() => import('./pages/Step4Page'));
+const Step5Page = lazy(() => import('./pages/Step5Page'));
+const CompletePage = lazy(() => import('./pages/CompletePage'));
+const DetailPage = lazy(() => import('./pages/DetailPage'));
+
+function Loader() {
+  return (
+    <div className="flex items-center justify-center min-h-[60vh]">
+      <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+    </div>
+  );
+}
+
+function SuspenseWrapper({ children }: { children: ReactNode }) {
+  return <Suspense fallback={<Loader />}>{children}</Suspense>;
+}
 
 export interface RouteConfig {
   name: string;
@@ -18,14 +33,14 @@ export interface RouteConfig {
 }
 
 export const routes: RouteConfig[] = [
-  { name: '登录', path: '/login', element: <LoginPage />, public: true },
-  { name: '首页', path: '/', element: <HomePage /> },
-  { name: '新建教案', path: '/create', element: <Step1Page /> },
-  { name: '第一步', path: '/step/1', element: <Step1Page /> },
-  { name: '第二步', path: '/step/2', element: <Step2Page /> },
-  { name: '第三步', path: '/step/3', element: <Step3Page /> },
-  { name: '第四步', path: '/step/4', element: <Step4Page /> },
-  { name: '第五步', path: '/step/5', element: <Step5Page /> },
-  { name: '完成', path: '/complete/:id', element: <CompletePage /> },
-  { name: '详情', path: '/detail/:id', element: <DetailPage /> },
+  { name: '登录', path: '/login', element: <SuspenseWrapper><LoginPage /></SuspenseWrapper>, public: true },
+  { name: '首页', path: '/', element: <SuspenseWrapper><HomePage /></SuspenseWrapper> },
+  { name: '新建教案', path: '/create', element: <SuspenseWrapper><Step1Page /></SuspenseWrapper> },
+  { name: '第一步', path: '/step/1', element: <SuspenseWrapper><Step1Page /></SuspenseWrapper> },
+  { name: '第二步', path: '/step/2', element: <SuspenseWrapper><Step2Page /></SuspenseWrapper> },
+  { name: '第三步', path: '/step/3', element: <SuspenseWrapper><Step3Page /></SuspenseWrapper> },
+  { name: '第四步', path: '/step/4', element: <SuspenseWrapper><Step4Page /></SuspenseWrapper> },
+  { name: '第五步', path: '/step/5', element: <SuspenseWrapper><Step5Page /></SuspenseWrapper> },
+  { name: '完成', path: '/complete/:id', element: <SuspenseWrapper><CompletePage /></SuspenseWrapper> },
+  { name: '详情', path: '/detail/:id', element: <SuspenseWrapper><DetailPage /></SuspenseWrapper> },
 ];
